@@ -43,11 +43,27 @@ models:
   my_first_dbt_project:
 
     staging:
-      +materialized: view
+      +materialized: table
+      +partition_by: {field: 'order_date', data_type: 'DATE'}
 
     intermediate:
-      +materialized: view
+      +materialized: table
     
     mart:
       schema: mart
       +materialized: table
+
+
+sources:
+  - name : local_bike
+    schema : local_bike
+    tables :
+      - name: brands
+      - name: categories
+      - name: customers
+      - name: order_items
+      - name: orders
+      - name: products
+      - name: staffs
+      - name: stocks
+      - name: stores

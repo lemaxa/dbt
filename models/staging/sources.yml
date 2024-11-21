@@ -2,13 +2,24 @@ version: 2
 
 models:
   - name: stg_orders
-    description: "Table des commandes avec l'ID du client"
+    description: "Table de staging pour ne récupérer que les colonnes et lignes essentielles. Table partitionnée sur order_date"
     columns :
       - name : order_id
-        description : "ID de la commande"
+        description : "ID unique de la commande que nous testions, clé primaire. permet de récupérer les données de la table order_items"
         tests :
           - unique
           - not_null
+      - name : order_date
+        description: "partionnement sur cette colonne"
+
+  - name : stg_order_items
+    description: "Table de staging pour ne récupérer que les colonnes et lignes essentielles. Permet de faire la jointure entre stg_orders et stg_products"
+    columns:
+      - name: order_id
+      - name : product_id
+      - name : quantity
+      - name : list_price
+
 
 sources:
   - name : local_bike
@@ -23,5 +34,3 @@ sources:
       - name: staffs
       - name: stocks
       - name: stores
-
-
