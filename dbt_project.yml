@@ -44,7 +44,7 @@ models:
 
     staging:
       +materialized: table
-      +partition_by: {field: 'order_date', data_type: 'DATE'}
+      partition_by: {field: 'order_date', data_type: 'DATE'}
 
     intermediate:
       +materialized: table
