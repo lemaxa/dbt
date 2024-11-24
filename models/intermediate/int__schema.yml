@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: int_orders_detailed
+    description: "Table de JOINs pour récupérer les valeurs de toutes les tables pertinentes pour notre analyse"
+    columns:
+      - name: order_id
+        description: "ID unique de la commande que nous testions, clé primaire. Permet de récupérer les données de la table order_items."
+      - name: order_date
+      - name : price
+        description: "prix du produit"
+      - name : quantity
+        description:  "Quantité commandée"
+      - brand_name : "Colonne de dimension dans le modèle qui permet de récupérer les marques"
+      - category_name : "Colonne de dimension dans le modèle qui permet de récupérer les catégories de produit"
