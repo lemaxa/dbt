@@ -46,9 +46,52 @@ models:
       - name: brand_id
         description: "Permet de faire la jointure avec la table brands."
 
+  - name: stg_staffs
+    description: "Table de staging pour ne récupérer que les colonnes et lignes essentielles."
+    columns:
+      - name: staff_id
+        description: "ID unique du staff."
+        tests:
+          - unique: 
+              description: "S'assure qu'aucun produit n'est dupliqué dans cette table."
+          - not_null: 
+              description: "S'assure que chaque produit a un identifiant non nul."
+      - name: store_id
+        description: "Permet de faire la jointure avec la table orders."
+
+  - name: stg_brands
+    description: "Table de staging pour ne récupérer que les colonnes et lignes essentielles."
+    columns:
+      - name: brand_id
+        description: "ID unique de la marque."
+        tests:
+          - unique: 
+              description: "S'assure qu'aucun produit n'est dupliqué dans cette table."
+          - not_null: 
+              description: "S'assure que chaque produit a un identifiant non nul."
+
+  - name: stg_categories
+    description: "Table de staging pour ne récupérer que les colonnes et lignes essentielles."
+    columns:
+      - name: category_id
+        description: "ID unique de la marque."
+        tests:
+          - unique: 
+              description: "S'assure qu'aucun produit n'est dupliqué dans cette table."
+          - not_null: 
+              description: "S'assure que chaque produit a un identifiant non nul."
+
 tests:
   - name: test_product_id_all_found_in_order_items
     description: >
       Vérifie que tous les `product_id` présents dans la table `stg_order_items` existent également dans la table `stg_products`.
     config:
       severity: error
+  - name : test_habilitation_staff
+    description : >
+      Vérifie que les employés partis ne sont plus dans le fichier de base des commandes
+      config:
+    severity: warn
+  - name : valeurs_positives_order_items
+    description : >
+      Vérifie que les commandes ont des valeurs positives

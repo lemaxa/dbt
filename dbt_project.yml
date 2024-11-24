@@ -50,7 +50,6 @@ models:
       +materialized: table
     
     mart:
-      schema: mart
       +materialized: table
 
 
