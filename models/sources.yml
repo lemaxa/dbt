@@ -1,15 +1,5 @@
 version: 2
 
-models:
-  - name: stg_orders
-    description: "Table des commandes avec l'ID du client"
-    columns :
-      - name : order_id
-        description : "ID de la commande"
-        tests :
-          - unique
-          - not_null
-
 sources:
   - name : local_bike
     schema : local_bike
@@ -23,5 +13,3 @@ sources:
       - name: staffs
       - name: stocks
       - name: stores
-
-

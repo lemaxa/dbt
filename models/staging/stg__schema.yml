@@ -1,0 +1,97 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Table de staging pour ne récupérer que les colonnes et lignes essentielles. Table partitionnée sur order_date"
+    columns:
+      - name: order_id
+        description: "ID unique de la commande que nous testions, clé primaire. Permet de récupérer les données de la table order_items."
+        tests:
+          - unique: 
+              description: "S'assure que chaque commande possède un identifiant unique."
+          - not_null: 
+              description: "S'assure que chaque commande a un identifiant non nul."
+      - name: order_date
+        description: "Partitionnement sur cette colonne."
+
+  - name: stg_order_items
+    description: "Table de staging pour ne récupérer que les colonnes et lignes essentielles. Permet de faire la jointure entre stg_orders et stg_products."
+    columns:
+      - name: order_id
+        description: "ID unique de la commande que nous testions, clé primaire. Permet de récupérer les données de la table order_items."
+        tests:
+          - unique: 
+              description: "S'assure que chaque ligne correspond à une commande unique."
+          - not_null: 
+              description: "Vérifie qu'aucune commande n'a de valeur NULL pour order_id."
+      - name: product_id
+        description: "ID unique du produit dans la commande."
+      - name: quantity
+        description: "Quantité commandée pour un produit donné."
+      - name: list_price
+        description: "Prix unitaire du produit au moment de la commande."
+
+  - name: stg_products
+    description: "Table de staging pour ne récupérer que les colonnes et lignes essentielles. Permet de faire la jointure avec stg_order_items et les tables de dimensions categories et brands."
+    columns:
+      - name: product_id
+        description: "ID unique du produit."
+        tests:
+          - unique: 
+              description: "S'assure qu'aucun produit n'est dupliqué dans cette table."
+          - not_null: 
+              description: "S'assure que chaque produit a un identifiant non nul."
+      - name: category_id
+        description: "Permet de faire la jointure avec la table categories."
+      - name: brand_id
+        description: "Permet de faire la jointure avec la table brands."
+
+  - name: stg_staffs
+    description: "Table de staging pour ne récupérer que les colonnes et lignes essentielles."
+    columns:
+      - name: staff_id
+        description: "ID unique du staff."
+        tests:
+          - unique: 
+              description: "S'assure qu'aucun produit n'est dupliqué dans cette table."
+          - not_null: 
+              description: "S'assure que chaque produit a un identifiant non nul."
+      - name: store_id
+        description: "Permet de faire la jointure avec la table orders."
+
+  - name: stg_brands
+    description: "Table de staging pour ne récupérer que les colonnes et lignes essentielles."
+    columns:
+      - name: brand_id
+        description: "ID unique de la marque."
+        tests:
+          - unique: 
+              description: "S'assure qu'aucun produit n'est dupliqué dans cette table."
+          - not_null: 
+              description: "S'assure que chaque produit a un identifiant non nul."
+
+  - name: stg_categories
+    description: "Table de staging pour ne récupérer que les colonnes et lignes essentielles."
+    columns:
+      - name: category_id
+        description: "ID unique de la marque."
+        tests:
+          - unique: 
+              description: "S'assure qu'aucun produit n'est dupliqué dans cette table."
+          - not_null: 
+              description: "S'assure que chaque produit a un identifiant non nul."
+
+tests:
+  - name: test_product_id_all_found_in_order_items
+    description: >
+      Vérifie que tous les `product_id` présents dans la table `stg_order_items` existent également dans la table `stg_products`.
+    config:
+      severity: error
+  - name : test_habilitation_staff
+    description : >
+      Vérifie que les employés partis ne sont plus dans le fichier de base des commandes
+      config:
+    severity: warn
+  - name : valeurs_positives_order_items
+    description : >
+      Vérifie que les commandes ont des valeurs positives

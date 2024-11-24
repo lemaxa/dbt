@@ -43,11 +43,13 @@ models:
   my_first_dbt_project:
 
     staging:
-      +materialized: view
+      +materialized: table
+      partition_by: {field: 'order_date', data_type: 'DATE'}
 
     intermediate:
-      +materialized: view
+      +materialized: table
     
     mart:
-      schema: mart
       +materialized: table
+
+
