@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: mar_order_items_aggregated
+    description: "Table pour l'ingestion dans Looker"
+    columns:
+      - name: order_id
+        description: "ID unique de la commande que nous testions, clé primaire. Permet de récupérer les données de la table order_items."
+      - name: order_date
+      - name : turnover
+        description: "Colonne qui somme les lignes par commandes, brand name et category name des prix fois les quantités, avant discount."
+      - brand_name : "Colonne de dimension dans le modèle qui permet de récupérer les marques"
+      - category_name : "Colonne de dimension dans le modèle qui permet de récupérer les catégories de produit"
